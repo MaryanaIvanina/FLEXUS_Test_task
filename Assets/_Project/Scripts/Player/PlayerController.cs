@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController _characterController;
     private IInputService _inputService;
     private Transform _cameraTransform;
+    private Animator _animator;
 
     [Inject]
     public void Construct(IInputService inputService)
@@ -20,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
+        _animator = GetComponent<Animator>();
         _cameraTransform = Camera.main.transform;
     }
 
@@ -29,13 +31,12 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         HandleMovement();
+        UpdateAnimator();
     }
 
     private void HandleMovement()
     {
         Vector2 input = _inputService.MoveInput;
-
-        if (input == Vector2.zero) return;
 
         Vector3 direction = new Vector3(input.x, 0, input.y);
 
@@ -54,5 +55,18 @@ public class PlayerController : MonoBehaviour
 
             _characterController.Move(movement * Time.deltaTime);
         }
+        else
+        {
+            Vector3 idleMovement = new Vector3(0, -9.81f, 0);
+            _characterController.Move(idleMovement * Time.deltaTime);
+        }
+    }
+
+    private void UpdateAnimator()
+    {
+        Vector3 horizontalVelocity = new Vector3(_characterController.velocity.x, 0, _characterController.velocity.z);
+        float speed = horizontalVelocity.magnitude;
+
+        _animator.SetFloat("Speed", speed, 0.1f, Time.deltaTime);
     }
 }
