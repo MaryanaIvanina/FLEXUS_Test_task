@@ -1,7 +1,7 @@
 using UnityEngine;
 using Zenject;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IControllable
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float sprintSpeed = 8f;
@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     private IInputService _inputService;
     private Transform _cameraTransform;
     private Animator _animator;
+
+    public GameObject GameObject => gameObject;
 
     [Inject]
     public void Construct(IInputService inputService)
@@ -25,9 +27,6 @@ public class PlayerController : MonoBehaviour
         _cameraTransform = Camera.main.transform;
     }
 
-    private void OnEnable() => _inputService.Enable();
-    private void OnDisable() => _inputService.Disable();
-
     private void Update()
     {
         HandleMovement();
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector2 input = _inputService.MoveInput;
 
-        Vector3 direction = new Vector3(input.x, 0, input.y);
+        Vector3 direction = new(input.x, 0, input.y);
 
         if (direction != Vector3.zero)
         {
@@ -57,16 +56,25 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Vector3 idleMovement = new Vector3(0, -9.81f, 0);
+            Vector3 idleMovement = new(0, -9.81f, 0);
             _characterController.Move(idleMovement * Time.deltaTime);
         }
     }
 
     private void UpdateAnimator()
     {
-        Vector3 horizontalVelocity = new Vector3(_characterController.velocity.x, 0, _characterController.velocity.z);
+        Vector3 horizontalVelocity = new(_characterController.velocity.x, 0, _characterController.velocity.z);
         float speed = horizontalVelocity.magnitude;
 
         _animator.SetFloat("Speed", speed, 0.1f, Time.deltaTime);
+    }
+
+    public void SetControlActive(bool isActive)
+    {
+        this.enabled = isActive;
+
+        _characterController.enabled = isActive;
+
+        if (!isActive) _animator.SetFloat("Speed", 0);
     }
 }

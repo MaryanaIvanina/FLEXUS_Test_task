@@ -32,6 +32,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Brake",
+                    "type": "Button",
+                    "id": "6db037f1-08d3-4ac9-a18b-bace265de454",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -60,7 +69,7 @@
                 {
                     "name": "up",
                     "id": "92803fb7-8c08-4587-a3b0-12816bc4132e",
-                    "path": "<Keyboard>/#(W)",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -71,7 +80,7 @@
                 {
                     "name": "down",
                     "id": "cbe9b04d-e7d7-40f7-933c-3ede28ecb7ee",
-                    "path": "<Keyboard>/#(S)",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -82,7 +91,7 @@
                 {
                     "name": "left",
                     "id": "04642298-f042-4b41-9d6a-33607c355e2a",
-                    "path": "<Keyboard>/#(A)",
+                    "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -93,7 +102,7 @@
                 {
                     "name": "right",
                     "id": "3887bee9-1d7b-4707-8b8e-06d54ac1c402",
-                    "path": "<Keyboard>/#(D)",
+                    "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -115,11 +124,22 @@
                 {
                     "name": "",
                     "id": "db618332-508b-4da8-83c9-eb59b52f4714",
-                    "path": "<Keyboard>/#(E)",
+                    "path": "<Keyboard>/e",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "85f44402-90fc-4071-acfc-79d241e77994",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Brake",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -1,18 +1,33 @@
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class InputService : IInputService
+
+public class InputService : IInputService, IDisposable
 {
-    private readonly GameControl _controls;
+    private readonly GameControl _control;
 
     public InputService()
     {
-        _controls = new GameControl();
+        _control = new GameControl();
+        _control.Enable();
+        _control.Player.Interact.performed += OnInteractPerformed;
     }
 
-    public Vector2 MoveInput => _controls.Player.Move.ReadValue<Vector2>();
-    public bool IsSprintPressed => _controls.Player.Sprint.IsPressed();
-    public bool IsInteractPressed => _controls.Player.Interact.WasPressedThisFrame();
+    public void Dispose()
+    {
+        _control.Player.Interact.performed -= OnInteractPerformed;
+        _control.Disable();
+    }
 
-    public void Enable() => _controls.Enable();
-    public void Disable() => _controls.Disable();
+    private void OnInteractPerformed(InputAction.CallbackContext context)
+    {
+        OnInteract?.Invoke();
+    }
+
+    public Vector2 MoveInput => _control.Player.Move.ReadValue<Vector2>();
+    public bool IsSprintPressed => _control.Player.Sprint.IsPressed();
+    public bool IsBraking => _control.Player.Brake.IsPressed();
+
+    public event Action OnInteract;
 }

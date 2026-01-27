@@ -1,10 +1,12 @@
 using UnityEngine;
+using System;
+using UnityEngine.InputSystem;
 
 public interface IInputService
 {
     Vector2 MoveInput { get; }
     bool IsSprintPressed { get; }
-    bool IsInteractPressed { get; }
-    void Enable();
-    void Disable();
+    bool IsBraking { get; }
+
+    event Action OnInteract;
 }
