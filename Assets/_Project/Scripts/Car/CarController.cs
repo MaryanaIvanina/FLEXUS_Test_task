@@ -32,6 +32,11 @@ public class CarController : MonoBehaviour, IControllable
         _inputService = inputService;
     }
 
+    private void Start()
+    {
+        GetComponent<Rigidbody>().centerOfMass = new Vector3(0, -0.6f, 0);
+    }
+
     private void Update()
     {
         _currentInput = _inputService.MoveInput;

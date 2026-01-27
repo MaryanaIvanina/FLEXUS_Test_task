@@ -557,19 +557,19 @@ PrefabInstance:
     - target: {fileID: 4919616170182126177, guid: 810dc974f6db3ff44bf757c534839bf7, type: 3}
       propertyPath: rearLeftMesh
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7869565309892043563}
     - target: {fileID: 4919616170182126177, guid: 810dc974f6db3ff44bf757c534839bf7, type: 3}
       propertyPath: frontLeftMesh
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8552931702316442544}
     - target: {fileID: 4919616170182126177, guid: 810dc974f6db3ff44bf757c534839bf7, type: 3}
       propertyPath: rearRightMesh
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5013299976041629784}
     - target: {fileID: 4919616170182126177, guid: 810dc974f6db3ff44bf757c534839bf7, type: 3}
       propertyPath: frontRightMesh
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8680744430383607038}
     - target: {fileID: 5703021474500782381, guid: 810dc974f6db3ff44bf757c534839bf7, type: 3}
       propertyPath: m_Radius
       value: 0.3
