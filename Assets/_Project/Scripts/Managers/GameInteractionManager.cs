@@ -1,33 +1,56 @@
 using UnityEngine;
 using Zenject;
 using System.Linq;
+using Content.UI;
+using System.Collections.Generic;
+using UnityEditor.UI;
 
 public class GameInteractionManager : MonoBehaviour
 {
     [Header("Dependencies")]
-    [SerializeField] private PlayerController playerController;
     [SerializeField] private CameraFollow cameraFollow;
+    [SerializeField] private Speedometer speedometer;
+
+    [Header("Spawn Settings")]
+    [SerializeField] private List<Transform> carSpawnPoints;
 
     [Header("Settings")]
     [SerializeField] private float interactRadius = 3.0f;
-    [SerializeField] private LayerMask interactableLayer; 
+    [SerializeField] private LayerMask interactableLayer;
 
     private IInputService _inputService;
-    private IControllable _currentEntity; 
+    private GameFactory _gameFactory;
+    private Transform _playerSpawnPoint;
+
+    public PlayerController Player { get; private set; }
+    private IControllable _currentEntity;
     private bool _isDriving = false;
 
     [Inject]
-    public void Construct(IInputService inputService)
+    public void Construct(IInputService inputService,
+        GameFactory gameFactory,
+        [Inject(Id = "PlayerSpawn")] Transform playerSpawn)
     {
         _inputService = inputService;
+        _gameFactory = gameFactory;
+        _playerSpawnPoint = playerSpawn;
     }
 
     private void Start()
     {
+        Player = _gameFactory.CreatePlayer(_playerSpawnPoint);
+
+        for (int i = 0; i < carSpawnPoints.Count; i++)
+        {
+            int carIndex = i;
+            _gameFactory.CreateCar(carSpawnPoints[i], carIndex);
+        }
         _inputService.OnInteract += HandleInteraction;
 
-        _currentEntity = playerController;
-        SwitchControlTo(playerController);
+        _currentEntity = Player;
+        SwitchControlTo(Player);
+
+        if (speedometer != null) speedometer.Hide();
     }
 
     private void OnDestroy()
@@ -43,13 +66,13 @@ public class GameInteractionManager : MonoBehaviour
 
     private void TryEnterVehicle()
     {
-        Collider[] hits = Physics.OverlapSphere(playerController.transform.position, interactRadius, interactableLayer);
+        Collider[] hits = Physics.OverlapSphere(Player.transform.position, interactRadius, interactableLayer);
 
         IControllable nearestVehicle = hits
             .Select(h => h.GetComponentInParent<IControllable>())
-            .Where(c => c != null && c != (IControllable)playerController) 
-            .OrderBy(c => Vector3.Distance(playerController.transform.position, c.transform.position)) 
-            .FirstOrDefault(); 
+            .Where(c => c != null && c != (IControllable)Player)
+            .OrderBy(c => Vector3.Distance(Player.transform.position, c.transform.position))
+            .FirstOrDefault();
 
         if (nearestVehicle != null) EnterVehicle(nearestVehicle);
     }
@@ -58,15 +81,21 @@ public class GameInteractionManager : MonoBehaviour
     {
         _isDriving = true;
 
-        playerController.gameObject.SetActive(false);
+        Player.gameObject.SetActive(false);
 
         SwitchControlTo(vehicle);
+
+        if (speedometer != null)
+        {
+            var rb = vehicle.GameObject.GetComponent<Rigidbody>();
+            if (rb) speedometer.Show(rb);
+        }
     }
 
     private void ExitVehicle()
     {
         Transform vehicleTransform = _currentEntity.transform;
-
+        
         Vector3 exitPosition;
         Quaternion exitRotation;
 
@@ -75,10 +104,12 @@ public class GameInteractionManager : MonoBehaviour
 
         _isDriving = false;
 
-        playerController.transform.SetPositionAndRotation(exitPosition, exitRotation);
-        playerController.gameObject.SetActive(true);
+        Player.transform.SetPositionAndRotation(exitPosition, exitRotation);
+        Player.gameObject.SetActive(true);
 
-        SwitchControlTo(playerController);
+        SwitchControlTo(Player);
+
+        if (speedometer != null) speedometer.Hide();
     }
 
     private void SwitchControlTo(IControllable entity)

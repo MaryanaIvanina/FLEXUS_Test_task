@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Threading.Tasks;
-using Zenject; 
+using Zenject;
+
 namespace Content.Car.Visuals
 {
     [RequireComponent(typeof(AudioSource))]
@@ -8,11 +9,15 @@ namespace Content.Car.Visuals
     {
         [Header("References")]
         [SerializeField] private Rigidbody carRigidbody;
-        [SerializeField] private AudioSource audioSource;
+        [SerializeField] private AudioSource engineSource;
+        [SerializeField] private CarController carController;
 
-        [Header("Clips")]
+        [Header("Clips - Engine")]
         [SerializeField] private AudioClip ignitionSound;
         [SerializeField] private AudioClip engineLoopSound;
+
+        [Header("Clips - Doors")]
+        [SerializeField] private AudioClip doorOpenCloseSound;
 
         [Header("Pitch Settings")]
         [SerializeField] private float minPitch = 0.8f;
@@ -20,7 +25,7 @@ namespace Content.Car.Visuals
         [SerializeField] private float maxSpeed = 100f;
 
         [Header("Volume Settings")]
-        [SerializeField] private float fadeSpeed = 5.0f; 
+        [SerializeField] private float fadeSpeed = 5.0f;
 
         private IInputService _inputService;
         private bool _isEngineRunning = false;
@@ -34,34 +39,42 @@ namespace Content.Car.Visuals
 
         private void Reset()
         {
-            audioSource = GetComponent<AudioSource>();
+            engineSource = GetComponent<AudioSource>();
             carRigidbody = GetComponentInParent<Rigidbody>();
         }
 
         public void StartEngine()
         {
             if (_isEngineRunning || _isIgnitionInProgress) return;
-            PlayIgnitionSequence();
+            PlayEntrySequence();
         }
 
         public void StopEngine()
         {
             _isEngineRunning = false;
             _isIgnitionInProgress = false;
-            audioSource.Stop();
+            engineSource.Stop();
         }
 
-        private async void PlayIgnitionSequence()
+        private async void PlayEntrySequence()
         {
             _isIgnitionInProgress = true;
 
+            if (doorOpenCloseSound != null)
+            {
+                engineSource.PlayOneShot(doorOpenCloseSound);
+                await Task.Delay(1000);
+            }
+
+            if (!_isIgnitionInProgress) return;
+
             if (ignitionSound != null)
             {
-                audioSource.loop = false;
-                audioSource.clip = ignitionSound;
-                audioSource.pitch = 1f;
-                audioSource.volume = 1f; 
-                audioSource.Play();
+                engineSource.loop = false;
+                engineSource.clip = ignitionSound;
+                engineSource.pitch = 1f;
+                engineSource.volume = 1f;
+                engineSource.Play();
 
                 int waitTime = (int)(ignitionSound.length * 1000);
                 await Task.Delay(waitTime);
@@ -72,10 +85,12 @@ namespace Content.Car.Visuals
             _isEngineRunning = true;
             _isIgnitionInProgress = false;
 
-            audioSource.clip = engineLoopSound;
-            audioSource.loop = true;
-            audioSource.volume = 0f;
-            audioSource.Play();
+            engineSource.clip = engineLoopSound;
+            engineSource.loop = true;
+            engineSource.volume = 0f;
+            engineSource.Play();
+
+            carController.SetCanMove(true);
         }
 
         private void Update()
@@ -83,18 +98,15 @@ namespace Content.Car.Visuals
             if (!_isEngineRunning) return;
 
             bool isGasPressed = Mathf.Abs(_inputService.MoveInput.y) > 0.1f;
+            float targetVolume = isGasPressed ? 1.0f : 0.2f; 
 
-            float targetVolume = isGasPressed ? 1.0f : 0.0f;
-
-            audioSource.volume = Mathf.Lerp(audioSource.volume, targetVolume, Time.deltaTime * fadeSpeed);
-
+            engineSource.volume = Mathf.Lerp(engineSource.volume, targetVolume, Time.deltaTime * fadeSpeed);
 
             float currentSpeed = carRigidbody.linearVelocity.magnitude * 3.6f;
-
             float inputBoost = Mathf.Abs(_inputService.MoveInput.y) * 0.3f;
 
             float targetPitch = Mathf.Lerp(minPitch, maxPitch, currentSpeed / maxSpeed) + inputBoost;
-            audioSource.pitch = Mathf.Lerp(audioSource.pitch, targetPitch, Time.deltaTime * 5f);
+            engineSource.pitch = Mathf.Lerp(engineSource.pitch, targetPitch, Time.deltaTime * 5f);
         }
     }
 }

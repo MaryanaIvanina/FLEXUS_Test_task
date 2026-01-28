@@ -26,6 +26,7 @@ public class CarController : MonoBehaviour, IControllable
     private IInputService _inputService;
     private Vector2 _currentInput; 
     private bool _isBraking;
+    private bool _canMove = false;
 
     public GameObject GameObject => gameObject;
 
@@ -42,6 +43,8 @@ public class CarController : MonoBehaviour, IControllable
 
     private void Update()
     {
+        if (!_canMove) return;
+
         _currentInput = _inputService.MoveInput;
         _isBraking = _inputService.IsBraking;
         ApplyMotor();
@@ -107,5 +110,10 @@ public class CarController : MonoBehaviour, IControllable
             carAudio.StopEngine();
         }
         else carAudio.StartEngine();
+    }
+
+    public void SetCanMove(bool state)
+    {
+        _canMove = state;
     }
 }
