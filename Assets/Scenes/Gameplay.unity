@@ -337,8 +337,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 935166c0ccfe72a4c974d3d4348fb0ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 5, z: -10}
-  smoothSpeed: 0.01
+  sensitivity: 0.5
+  smoothTime: 0.6
+  verticalLimits: {x: -10, y: 40}
+  distance: 7
+  height: 2
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

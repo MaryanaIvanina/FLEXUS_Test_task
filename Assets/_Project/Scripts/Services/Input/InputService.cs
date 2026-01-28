@@ -25,6 +25,7 @@ public class InputService : IInputService, IDisposable
         OnInteract?.Invoke();
     }
 
+    public Vector2 LookInput => _control.Player.Look.ReadValue<Vector2>();
     public Vector2 MoveInput => _control.Player.Move.ReadValue<Vector2>();
     public bool IsSprintPressed => _control.Player.Sprint.IsPressed();
     public bool IsBraking => _control.Player.Brake.IsPressed();
