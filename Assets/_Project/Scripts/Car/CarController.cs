@@ -1,3 +1,4 @@
+using Content.Car.Visuals;
 using UnityEngine;
 using Zenject;
 
@@ -7,6 +8,8 @@ public class CarController : MonoBehaviour, IControllable
     [SerializeField] private float motorForce = 10000f; 
     [SerializeField] private float brakeForce = 50000f;
     [SerializeField] private float maxSteerAngle = 30f;
+
+    [SerializeField] private CarAudio carAudio;
 
     [Header("Wheel Colliders")]
     [SerializeField] private WheelCollider frontLeftCollider;
@@ -100,6 +103,9 @@ public class CarController : MonoBehaviour, IControllable
 
             frontLeftCollider.motorTorque = 0;
             frontRightCollider.motorTorque = 0;
+
+            carAudio.StopEngine();
         }
+        else carAudio.StartEngine();
     }
 }

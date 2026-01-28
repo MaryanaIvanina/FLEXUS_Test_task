@@ -580,6 +580,8 @@ GameObject:
   - component: {fileID: 8819532821347825782}
   - component: {fileID: 1431147923013507006}
   - component: {fileID: 4919616170182126177}
+  - component: {fileID: 2987447691693400722}
+  - component: {fileID: 4162872518467515993}
   m_Layer: 6
   m_Name: Car_Red
   m_TagString: Untagged
@@ -669,6 +671,7 @@ MonoBehaviour:
   motorForce: 10000
   brakeForce: 50000
   maxSteerAngle: 30
+  carAudio: {fileID: 4162872518467515993}
   frontLeftCollider: {fileID: 7055239837608817792}
   frontRightCollider: {fileID: 5703021474500782381}
   rearLeftCollider: {fileID: 8138516796387891611}
@@ -677,6 +680,122 @@ MonoBehaviour:
   frontRightMesh: {fileID: 4263846080594402197}
   rearLeftMesh: {fileID: 4269099617747624988}
   rearRightMesh: {fileID: 7624441258049362748}
+--- !u!82 &2987447691693400722
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4710802967337346587}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 8adf48849738f714da85de5b883b9d61, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &4162872518467515993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4710802967337346587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b19614b222f59d4ba0fc29d3b107bd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  carRigidbody: {fileID: 8819532821347825782}
+  audioSource: {fileID: 2987447691693400722}
+  ignitionSound: {fileID: 8300000, guid: 8adf48849738f714da85de5b883b9d61, type: 3}
+  engineLoopSound: {fileID: 8300000, guid: abd8a7c7239e51541896f0e3d1e2104c, type: 3}
+  minPitch: 0.8
+  maxPitch: 2
+  maxSpeed: 100
 --- !u!1 &4916452399552001221
 GameObject:
   m_ObjectHideFlags: 0
