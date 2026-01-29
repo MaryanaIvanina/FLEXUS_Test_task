@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float sensitivity = 0.5f;
     [SerializeField] private float smoothTime = 0.6f;
-    [SerializeField] private Vector2 verticalLimits = new Vector2(-10f, 40f);
+    [SerializeField] private Vector2 verticalLimits = new(-10f, 40f);
     [SerializeField] private float distance = 7f; 
     [SerializeField] private float height = 2f; 
 

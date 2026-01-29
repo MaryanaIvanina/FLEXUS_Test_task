@@ -28,7 +28,6 @@ public class GameFactory
     {
         if (prefabIndex < 0 || prefabIndex >= _carPrefabs.Count)
         {
-            Debug.LogError($"GameFactory: Немає машини з індексом {prefabIndex}. Спавню першу.");
             prefabIndex = 0;
         }
 

@@ -6,7 +6,7 @@ public class GameplaySceneInstaller : MonoInstaller
 {
     [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
-    [SerializeField] private List<GameObject> carPrefabs; // <--- ÒÓÒ ÑÏÈÑÎÊ
+    [SerializeField] private List<GameObject> carPrefabs;
 
     [Header("Spawn Points")]
     [SerializeField] private Transform playerSpawnPoint;

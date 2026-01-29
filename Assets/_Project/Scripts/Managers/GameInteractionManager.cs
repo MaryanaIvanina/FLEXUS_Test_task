@@ -3,13 +3,14 @@ using Zenject;
 using System.Linq;
 using Content.UI;
 using System.Collections.Generic;
-using UnityEditor.UI;
+using Content.Car.Visuals;
 
 public class GameInteractionManager : MonoBehaviour
 {
     [Header("Dependencies")]
     [SerializeField] private CameraFollow cameraFollow;
     [SerializeField] private Speedometer speedometer;
+    [SerializeField] private SpeedEffect speedEffect;
 
     [Header("Spawn Settings")]
     [SerializeField] private List<Transform> carSpawnPoints;
@@ -51,6 +52,8 @@ public class GameInteractionManager : MonoBehaviour
         SwitchControlTo(Player);
 
         if (speedometer != null) speedometer.Hide();
+
+        if (speedEffect != null) speedEffect.ClearTarget();
     }
 
     private void OnDestroy()
@@ -85,17 +88,20 @@ public class GameInteractionManager : MonoBehaviour
 
         SwitchControlTo(vehicle);
 
-        if (speedometer != null)
+        var rb = vehicle.GameObject.GetComponent<Rigidbody>();
+
+        if (rb != null)
         {
-            var rb = vehicle.GameObject.GetComponent<Rigidbody>();
-            if (rb) speedometer.Show(rb);
+            if (speedometer != null) speedometer.Show(rb);
+
+            if (speedEffect != null) speedEffect.SetTargetCar(rb);
         }
     }
 
     private void ExitVehicle()
     {
         Transform vehicleTransform = _currentEntity.transform;
-        
+
         Vector3 exitPosition;
         Quaternion exitRotation;
 
@@ -110,6 +116,8 @@ public class GameInteractionManager : MonoBehaviour
         SwitchControlTo(Player);
 
         if (speedometer != null) speedometer.Hide();
+
+        if (speedEffect != null) speedEffect.ClearTarget();
     }
 
     private void SwitchControlTo(IControllable entity)
